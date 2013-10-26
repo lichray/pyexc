@@ -8,6 +8,16 @@ static PyMethodDef _test_methods[] =
 	{NULL}
 };
 
+static py::object_ptr get_helloworld()
+{
+	auto s = py::new_shared(PyString_FromString, "Hello, world");
+
+	assert(s.use_count() == 2);
+	assert(PyString_Size(s.get()) == 12);
+
+	return s;
+}
+
 PyMODINIT_FUNC
 init_test(void)
 {
@@ -42,4 +52,10 @@ init_test(void)
 	assert(m == m2);
 	assert(m.use_count() == 3);
 	assert(m2.use_count() == 3);
+
+	auto s = get_helloworld();
+
+	assert(s.use_count() == 2);
+
+	PyModule_AddObject(m.get(), "s", s.get());
 }

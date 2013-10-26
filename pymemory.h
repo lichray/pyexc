@@ -118,6 +118,32 @@ private:
 	element_type* p_;
 };
 
+namespace detail {
+
+template <typename F, typename... Args>
+struct shared_result_of
+{
+	using type = shared_ptr
+		<
+		    typename std::remove_pointer
+		    <
+			typename std::result_of<F(Args...)>::type
+		    >
+		    ::type
+		>;
+};
+
+}
+
+template <typename F, typename... Args>
+auto new_shared(F f, Args... args)
+	-> typename detail::shared_result_of<F, Args...>::type
+{
+	using P = typename detail::shared_result_of<F, Args...>::type;
+
+	return P(f(args...));
+}
+
 template <typename T, typename U>
 inline
 bool operator==(shared_ptr<T> const& x, shared_ptr<U> const& y) noexcept
