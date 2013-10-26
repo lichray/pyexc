@@ -13,7 +13,7 @@ static py::object_ptr get_helloworld()
 	auto s = py::new_shared(PyString_FromString, "Hello, world");
 
 	assert(s.use_count() == 2);
-	assert(PyString_Size(s.get()) == 12);
+	assert(PyString_Size(s) == 12);
 
 	return s;
 }
@@ -57,5 +57,5 @@ init_test(void)
 
 	assert(s.use_count() == 2);
 
-	PyModule_AddObject(m.get(), "s", s.get());
+	PyModule_AddObject(m, "s", s);
 }

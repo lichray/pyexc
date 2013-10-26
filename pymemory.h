@@ -84,6 +84,11 @@ public:
 		std::swap(p_, r.p_);
 	}
 
+	operator element_type*() const noexcept
+	{
+		return get();
+	}
+
 	element_type* get() const noexcept
 	{
 		return p_;
