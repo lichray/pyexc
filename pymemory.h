@@ -71,7 +71,7 @@ public:
 
 	void reset() noexcept
 	{
-		Py_CLEAR(p_);
+		shared_ptr().swap(*this);
 	}
 
 	void reset(element_type* p)
@@ -91,12 +91,12 @@ public:
 
 	element_type& operator*() const noexcept
 	{
-		return *p_;
+		return *get();
 	}
 
 	element_type* operator->() const noexcept
 	{
-		return p_;
+		return get();
 	}
 
 	Py_ssize_t use_count() const noexcept
